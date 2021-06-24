@@ -1,18 +1,22 @@
-import React, { Component } from "react";
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import logo from "./logo.svg";
-import "./App.css";
+import { CssBaseline } from "@material-ui/core";
+import Search from "./components/pages/Search";
+import Nav from "./components/Nav";
+import MainContainer from "./components/layouts/MainContainer";
 
 function App() {
   return (
-    <div className="App">
-      <div className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <h2>Welcome to React</h2>
-      </div>
-      <p className="App-intro">
-        To get started, edit <code>src/App.js</code> and save to reload.
-      </p>
-    </div>
+    <React.Fragment>
+      <CssBaseline />
+      <Router>
+        <Nav />
+        <MainContainer>
+          <Route exact path="/" component={Search} />
+        </MainContainer>
+      </Router>
+    </React.Fragment>
   );
 }
 
