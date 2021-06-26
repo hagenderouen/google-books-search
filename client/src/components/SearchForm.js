@@ -1,7 +1,6 @@
 import React, { useContext, useRef } from "react";
 import { Paper, InputBase, makeStyles, IconButton, Grid } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
-import SearchContext from "./SearchContext";
 
 const useStyles = makeStyles((theme) => ({
     input: {
