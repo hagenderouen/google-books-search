@@ -1,13 +1,9 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
 import { Paper, InputBase, makeStyles, IconButton, Grid } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
+import SearchContext from "./SearchContext";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      marginTop: theme.spacing(5),
-      marginBottom: theme.spacing(5),
-      alignItems: "center"
-    },
     input: {
       marginLeft: theme.spacing(1),
       flex: 1,
@@ -17,26 +13,39 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
 
-function SearchForm() {
-    const classes = useStyles();
+function SearchForm({ setResultsState }) {
+  const searchInput = useRef();
+  // const { handleResultsState } = useContext(SearchContext);
+  const handleOnSubmit = (evt) => {
+    evt.preventDefault();
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput.current.value}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      // handleResultsState(data.items)
+      setResultsState(data.items)
+    })
+    .catch(e => console.log(e));
+  };
+  const classes = useStyles();
 
     return (
-        <Grid container justify="center" className={classes.root}>
-          <Grid item xs={6}>
-              <Paper component="form">
-                <Grid container alignItems="center" justify="space-between">
-                  <InputBase
-                      className={classes.input}
-                      placeholder="Search Google Books"
-                      inputProps={{ 'aria-label': 'search google books' }}
-                  />
-                  <IconButton type="submit" className={classes.iconButton} aria-label="search">
-                      <SearchIcon />
-                  </IconButton>
-                </Grid>
-              </Paper>
-          </Grid>
+      <Paper 
+      component="form"
+      onSubmit={handleOnSubmit}
+      >
+        <Grid container alignItems="center" justify="space-between">
+          <InputBase
+              className={classes.input}
+              placeholder="Search Google Books"
+              inputProps={{ 'aria-label': 'search google books' }}
+              inputRef={searchInput}
+          />
+          <IconButton type="submit" className={classes.iconButton} aria-label="search">
+              <SearchIcon />
+          </IconButton>
         </Grid>
+      </Paper>
     )
 }
 
